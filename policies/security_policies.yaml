@@ -1,0 +1,9 @@
+password_policy:
+  conditions:
+    - "enable secret"
+    - "service password-encryption"
+
+secure_management:
+  conditions:
+    - "ip ssh version 2"
+    - "no ip http server"

@@ -1,0 +1,20 @@
+# created by virtualenv automatically
+# macOS system files
+.DS_Store
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# IDE settings
+.idea/
+
+# Virtual environment
+venv/
+
+# Local configuration files
+*.env
+
+# Generated reports
+reports/
+

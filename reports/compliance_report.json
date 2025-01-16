@@ -1,0 +1,4 @@
+{
+    "password_policy": "Non-compliant: password_policy missing in GigabitEthernet0/1",
+    "secure_management": "Non-compliant: secure_management missing in GigabitEthernet0/1"
+}

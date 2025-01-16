@@ -1,0 +1,5 @@
+[console_scripts]
+netmiko-cfg=netmiko.cli_tools.netmiko_cfg:main_ep
+netmiko-grep=netmiko.cli_tools.netmiko_grep:main_ep
+netmiko-show=netmiko.cli_tools.netmiko_show:main_ep
+
