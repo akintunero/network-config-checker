@@ -1,0 +1,19 @@
+interface GigabitEthernet0/1
+  description Uplink to Core
+  ip address 192.168.1.1 255.255.255.0
+
+hostname SecureRouter
+
+enable password cisco123 
+service password-encryption 
+
+line con 0  
+ password cisco 
+ login 
+
+line vty 0 4  
+ no password 
+ login 
+
+ip ssh version 1 
+no ip http server 

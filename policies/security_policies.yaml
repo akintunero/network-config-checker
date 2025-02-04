@@ -2,8 +2,18 @@ password_policy:
   conditions:
     - "enable secret"
     - "service password-encryption"
+    - "line con 0"
+    - "password"  # Ensure password is set for console
+    - "login"     # Ensures login is required
+    - "line vty 0 4"
+    - "password"  # Ensure password is set for VTY
+    - "login"     # Ensures login is required
 
 secure_management:
   conditions:
     - "ip ssh version 2"
     - "no ip http server"
+
+hostname_policy:
+  conditions:
+  - "hostname"  # Ensures a hostname is configured
