@@ -1,6 +1,13 @@
+import os
+
 class ConfigParser:
     def __init__(self, config_text):
-        self.config_text = config_text
+        if os.path.isfile(config_text):  # Check if it's a file path
+            with open(config_text, "r") as file:
+                self.config_text = file.read()
+        else:  # Assume it's plain text
+            self.config_text = config_text
+
         self.interfaces = self.parse_interfaces()
 
     def parse_interfaces(self):
