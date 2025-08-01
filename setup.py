@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="network-config-checker",
     version="0.1.0",
-    author="Olumayowa Akinkuehinmi",
+    author="Olúmáyòwá Akinkuehinmi",
     author_email="akintunero101@gmail.com",
     description="A tool to check network configurations against security policies.",
     long_description=open("README.md").read(),
