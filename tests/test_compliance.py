@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from network_config_checker.compliance import ComplianceEngine, violations_at_or_above
@@ -15,21 +17,20 @@ def test_compliant_sample(sample_config_path, builtin_policy: str) -> None:
     assert result.summary["total_violations"] == 0
 
 
-def test_noncompliant_sample_detects_critical() -> None:
-    from tests.conftest import NONCOMPLIANT_CONFIG
-
+def test_noncompliant_sample_detects_critical(noncompliant_config_path: Path) -> None:
     pack = load_policies(resolve_policy_path("builtin/cisco_ios_baseline"))
-    result = scan_file(NONCOMPLIANT_CONFIG, pack)
+    result = scan_file(noncompliant_config_path, pack)
     assert result.summary["total_violations"] > 0
     critical = violations_at_or_above(result.violations, Severity.CRITICAL)
     assert any(v.rule_id == "NCC-FORBID_TELNET_TRANSPORT" for v in critical)
 
 
-def test_should_fail_on_high(sample_config_path, builtin_policy: str) -> None:
-    from tests.conftest import NONCOMPLIANT_CONFIG
-
+def test_should_fail_on_high(
+    builtin_policy: str,
+    noncompliant_config_path: Path,
+) -> None:
     pack = load_policies(resolve_policy_path(builtin_policy))
-    bad = scan_file(NONCOMPLIANT_CONFIG, pack)
+    bad = scan_file(noncompliant_config_path, pack)
     assert should_fail([bad], Severity.HIGH)
 
 

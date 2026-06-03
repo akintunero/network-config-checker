@@ -16,3 +16,8 @@ def sample_config_path() -> Path:
 @pytest.fixture
 def builtin_policy() -> str:
     return BUILTIN_POLICY
+
+
+@pytest.fixture
+def noncompliant_config_path() -> Path:
+    return NONCOMPLIANT_CONFIG

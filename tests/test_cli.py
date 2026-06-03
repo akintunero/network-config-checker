@@ -32,16 +32,18 @@ def test_cli_scan_compliant(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, sam
     assert payload["metadata"]["contact"] == "akintunero101@gmail.com"
 
 
-def test_cli_scan_noncompliant_fails(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    from tests.conftest import NONCOMPLIANT_CONFIG
-
+def test_cli_scan_noncompliant_fails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    noncompliant_config_path: Path,
+) -> None:
     monkeypatch.setattr(
         "sys.argv",
         [
             "network-config-checker",
             "scan",
             "-c",
-            str(NONCOMPLIANT_CONFIG),
+            str(noncompliant_config_path),
             "-p",
             "builtin/cisco_ios_baseline",
             "-o",
