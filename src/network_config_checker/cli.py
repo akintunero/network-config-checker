@@ -10,7 +10,7 @@ from pathlib import Path
 
 from network_config_checker import __version__
 from network_config_checker.exit_codes import EXIT_ERROR, EXIT_SUCCESS, EXIT_VIOLATIONS
-from network_config_checker.limits import ConfigSizeError, DEFAULT_MAX_CONFIG_BYTES
+from network_config_checker.limits import DEFAULT_MAX_CONFIG_BYTES, ConfigSizeError
 from network_config_checker.logging_config import configure_logging
 from network_config_checker.models import Severity
 from network_config_checker.policy import (

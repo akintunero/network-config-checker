@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from network_config_checker.live import LiveMonitor, device_from_env
-from network_config_checker.models import ComplianceResult, Severity, Violation, PolicyScope
+from network_config_checker.models import ComplianceResult, PolicyScope, Severity, Violation
 from network_config_checker.notifier import Notifier
 
 pytestmark = pytest.mark.unit

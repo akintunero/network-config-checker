@@ -9,10 +9,9 @@ from pathlib import Path
 from typing import Iterator
 
 from network_config_checker.compliance import ComplianceEngine, violations_at_or_above
-from network_config_checker.models import ComplianceResult, Severity
-from network_config_checker.parser import ConfigParser
 from network_config_checker.limits import DEFAULT_MAX_CONFIG_BYTES
-from network_config_checker.models import PolicyPack
+from network_config_checker.models import ComplianceResult, PolicyPack, Severity
+from network_config_checker.parser import ConfigParser
 
 logger = logging.getLogger(__name__)
 

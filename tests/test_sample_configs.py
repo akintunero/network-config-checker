@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
+from network_config_checker.models import Severity
 from network_config_checker.policy import load_policies
 from network_config_checker.scanner import scan_file, should_fail
-from network_config_checker.models import Severity
 
 pytestmark = pytest.mark.integration
 
