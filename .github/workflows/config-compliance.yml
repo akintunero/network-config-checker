@@ -1,0 +1,71 @@
+name: Config compliance
+
+on:
+  pull_request:
+    paths:
+      - "configs/**"
+      - "policies/**"
+  push:
+    branches: [main, master]
+    paths:
+      - "configs/**"
+      - "policies/**"
+
+jobs:
+  scan-configs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install network-config-checker
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Validate policy packs
+        run: network-config-checker validate-policies -p policies/builtin
+
+      - name: Scan Git-tracked configs (all builtin packs)
+        run: |
+          network-config-checker scan \
+            -c configs \
+            -p policies/builtin \
+            -o reports/configs \
+            --format sarif,json,junit,html \
+            --fail-on high \
+            --write-baseline-to reports/configs/baseline-summary.json
+
+      - name: Scan fleet inventory
+        run: |
+          network-config-checker scan \
+            --inventory configs/inventory.csv \
+            -c . \
+            -p policies/builtin \
+            -o reports/inventory \
+            --format json \
+            --fail-on high
+
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        continue-on-error: true
+        with:
+          sarif_file: reports/configs/compliance_report.sarif
+
+      - name: Upload compliance reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compliance-reports
+          path: |
+            reports/configs/
+            reports/inventory/

@@ -1,0 +1,3 @@
+hostname,path,vendor
+edge-sw-01,configs/production/edge-sw-01.cfg,cisco_ios
+core-sw-01,configs/lab/core-sw-01.cfg,cisco_ios

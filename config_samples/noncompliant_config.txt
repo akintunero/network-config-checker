@@ -1,0 +1,14 @@
+no service password-encryption
+ip http server
+!
+line vty 0 4
+ transport input telnet
+!
+interface GigabitEthernet0/1
+ ip address 192.168.1.1 255.255.255.0
+!
+interface GigabitEthernet0/2
+ description Missing policies on other checks
+ ip address 192.168.2.1 255.255.255.0
+!
+end

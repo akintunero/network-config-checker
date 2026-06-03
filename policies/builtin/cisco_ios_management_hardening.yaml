@@ -1,0 +1,71 @@
+policy_pack_name: cisco_ios_management_hardening
+policy_pack_version: "1.0.0"
+
+rules:
+  require_enable_secret:
+    id: NCC-REQUIRE_ENABLE_SECRET
+    description: Privileged EXEC must use enable secret (not only enable password)
+    severity: high
+    scope: global
+    required_conditions:
+      - "enable secret"
+    remediation: |
+      enable secret 9 $9$hashed_value_from_ios
+    references:
+      - "CIS Cisco IOS Benchmark — privileged credentials"
+      - "NIST SP 800-53 IA-5 — authenticator management"
+
+  require_console_login:
+    id: NCC-REQUIRE_CONSOLE_LOGIN
+    description: Console line must require authentication
+    severity: high
+    scope: global
+    required_conditions:
+      - "line con 0"
+      - "login"
+    remediation: |
+      line con 0
+       login local
+       logging synchronous
+    references:
+      - "CIS Cisco IOS Benchmark — console access control"
+
+  require_logging:
+    id: NCC-REQUIRE_LOGGING
+    description: Local or remote logging must be configured for audit trails
+    severity: medium
+    scope: global
+    conditions:
+      - "logging buffered"
+    remediation: |
+      logging buffered 16384
+      logging console informational
+    references:
+      - "CIS Cisco IOS Benchmark — logging"
+      - "NIST SP 800-53 AU-3 — content of audit records"
+
+  require_ntp:
+    id: NCC-REQUIRE_NTP
+    description: Time synchronization must be configured for correlated logging
+    severity: medium
+    scope: global
+    conditions:
+      - "ntp server"
+    remediation: |
+      ntp server 10.1.1.1 prefer
+      clock timezone UTC 0
+    references:
+      - "CIS Cisco IOS Benchmark — time synchronization"
+
+  forbid_snmp_public_community:
+    id: NCC-FORBID_SNMP_PUBLIC
+    description: Default SNMP community string public must not be configured
+    severity: critical
+    scope: global
+    forbidden_conditions:
+      - "snmp-server community public"
+    remediation: |
+      no snmp-server community public
+      snmp-server community READONLY RO SNMP-ACL
+    references:
+      - "CIS Cisco IOS Benchmark — SNMP community strings"

@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package and dev tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Ruff
+        run: ruff check src tests
+
+      - name: Mypy
+        run: mypy -p network_config_checker --ignore-missing-imports --disable-error-code=import-untyped
+
+      - name: Pytest
+        run: pytest tests/ -v --cov=network_config_checker --cov-report=term-missing
+
+      - name: Validate builtin policy packs
+        run: network-config-checker validate-policies -p policies/builtin
+
+      - name: Scan Git configs tree (all builtin packs)
+        if: matrix.python-version == '3.12'
+        run: |
+          network-config-checker scan \
+            -c configs \
+            -p policies/builtin \
+            -o reports/configs \
+            --format sarif,json \
+            --fail-on high
+
+      - name: Scan single production config (all builtin packs)
+        run: |
+          network-config-checker scan \
+            -c configs/production/edge-sw-01.cfg \
+            -p policies/builtin \
+            -o reports \
+            --format sarif,json \
+            --fail-on high
+
+      - name: Upload SARIF (configs fleet)
+        uses: github/codeql-action/upload-sarif@v3
+        if: matrix.python-version == '3.12'
+        continue-on-error: true
+        with:
+          sarif_file: reports/configs/compliance_report.sarif
+
+      - name: Upload SARIF (sample)
+        uses: github/codeql-action/upload-sarif@v3
+        if: matrix.python-version == '3.12'
+        continue-on-error: true
+        with:
+          sarif_file: reports/compliance_report.sarif
+          category: sample-config
+
+      - name: Verify noncompliant exit code
+        run: |
+          set +e
+          network-config-checker scan \
+            -c config_samples/noncompliant_config.txt \
+            -p builtin/cisco_ios_baseline \
+            -o reports-nc \
+            --format json \
+            --fail-on high
+          code=$?
+          set -e
+          test "$code" -eq 1
+
+      - name: pip-audit
+        run: pip-audit

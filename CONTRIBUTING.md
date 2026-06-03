@@ -204,8 +204,7 @@ When reporting issues, please include:
 
 3. **Install dependencies**:
    ```bash
-   pip install -r requirements.txt
-   pip install -r requirements-dev.txt
+   pip install -e ".[dev]"
    ```
 
 4. **Install pre-commit hooks**:
@@ -222,18 +221,16 @@ When reporting issues, please include:
 
 ```
 network-config-checker/
-├── src/                    # Source code
-│   ├── main.py            # Main entry point
-│   ├── parser.py          # Configuration parser
-│   ├── compliance_checker.py  # Compliance checking logic
-│   ├── report_generator.py    # Report generation
-│   └── live_monitor.py    # Live device monitoring
-├── tests/                  # Test files
-├── config_samples/         # Sample configuration files
-├── policies/              # Policy definitions
-├── reports/               # Generated reports
-├── docs/                  # Documentation
-└── examples/              # Usage examples
+├── src/network_config_checker/  # Python package
+├── tests/                       # Pytest suite
+├── configs/                     # Git-tracked device configs (CI)
+├── config_samples/              # Noncompliant fixture for tests
+├── policies/builtin/            # Canonical policy packs
+├── policies/schema/             # JSON Schema
+├── docs/                        # Documentation
+├── .github/workflows/           # CI and release
+├── action.yml                   # Composite GitHub Action
+└── pyproject.toml               # Dependencies and tooling (no requirements.txt)
 ```
 
 ## Adding New Features

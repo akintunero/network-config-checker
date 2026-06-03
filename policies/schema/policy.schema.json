@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/akintunero/network-config-checker/policies/schema/policy.schema.json",
+  "title": "Network Config Checker Policy Pack",
+  "type": "object",
+  "required": ["rules"],
+  "properties": {
+    "policy_pack_name": { "type": "string" },
+    "policy_pack_version": { "type": "string" },
+    "rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "severity", "scope"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "severity": { "enum": ["critical", "high", "medium", "low"] },
+          "scope": { "enum": ["global", "interface", "vlan"] },
+          "conditions": { "type": "array", "items": { "type": "string" } },
+          "required_conditions": { "type": "array", "items": { "type": "string" } },
+          "forbidden_conditions": { "type": "array", "items": { "type": "string" } },
+          "remediation": { "type": "string" },
+          "references": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "vendor": { "type": "string" },
+          "deprecated": { "type": "boolean" },
+          "replaced_by": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

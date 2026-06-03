@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: network-config-checker
+        name: Scan Git-tracked configs tree
+        entry: network-config-checker scan
+        language: system
+        pass_filenames: false
+        args:
+          - -c
+          - configs
+          - -p
+          - policies/builtin
+          - -o
+          - reports/pre-commit
+          - --format
+          - json
+          - --fail-on
+          - high

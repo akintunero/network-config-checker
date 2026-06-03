@@ -1,0 +1,60 @@
+name: Network Config Compliance Scan
+description: Offline compliance scanner for network configs in Git
+author: Olúmáyòwá Akinkuehinmi <akintunero101@gmail.com>
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  version:
+    description: Git tag to install when using this action from the marketplace (e.g. v2.1.0)
+    required: false
+    default: ""
+  config-path:
+    description: Configuration file or directory to scan
+    required: true
+  policy:
+    description: Policy path or builtin pack (default builtin/cisco_ios_baseline)
+    required: false
+    default: builtin/cisco_ios_baseline
+  output-dir:
+    description: Report output directory
+    required: false
+    default: reports
+  fail-on:
+    description: Fail when violations at or above this severity
+    required: false
+    default: high
+  formats:
+    description: Comma-separated report formats
+    required: false
+    default: sarif,json,txt
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install network-config-checker
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        if [ -n "${{ inputs.version }}" ]; then
+          python -m pip install "network-config-checker @ git+https://github.com/${{ github.repository }}@${{ inputs.version }}"
+        else
+          python -m pip install "${{ github.action_path }}"
+        fi
+
+    - name: Run compliance scan
+      shell: bash
+      run: |
+        network-config-checker scan \
+          -c "${{ inputs.config-path }}" \
+          -p "${{ inputs.policy }}" \
+          -o "${{ inputs.output-dir }}" \
+          --format "${{ inputs.formats }}" \
+          --fail-on "${{ inputs.fail-on }}"

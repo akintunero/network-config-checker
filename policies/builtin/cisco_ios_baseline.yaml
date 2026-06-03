@@ -1,0 +1,94 @@
+policy_pack_name: cisco_ios_baseline
+policy_pack_version: "1.0.0"
+
+rules:
+  require_hostname:
+    id: NCC-REQUIRE_HOSTNAME
+    description: Device must define a hostname for operations and auditing
+    severity: medium
+    scope: global
+    required_conditions:
+      - "regex:hostname\\s+\\S+"
+    remediation: |
+      hostname edge-sw-01
+    references:
+      - "CIS Cisco IOS Benchmark — device identification"
+      - "NIST SP 800-53 CM-8 — system component inventory"
+
+  disable_ip_http_server:
+    id: NCC-DISABLE_IP_HTTP_SERVER
+    description: Insecure HTTP management plane must be disabled
+    severity: high
+    scope: global
+    required_conditions:
+      - "no ip http server"
+    remediation: |
+      no ip http server
+      no ip http secure-server
+    references:
+      - "CIS Cisco IOS Benchmark — disable HTTP server"
+
+  require_ssh_version_2:
+    id: NCC-REQUIRE_SSH_V2
+    description: SSH version 2 must be enforced for administrative access
+    severity: high
+    scope: global
+    required_conditions:
+      - "ip ssh version 2"
+    remediation: |
+      ip ssh version 2
+      ip ssh time-out 60
+      ip ssh authentication-retries 3
+    references:
+      - "CIS Cisco IOS Benchmark — SSH version 2"
+
+  require_password_encryption:
+    id: NCC-REQUIRE_PASSWORD_ENCRYPTION
+    description: Type 7 reversible passwords must be avoided using service password-encryption
+    severity: medium
+    scope: global
+    required_conditions:
+      - "service password-encryption"
+    remediation: |
+      service password-encryption
+    references:
+      - "CIS Cisco IOS Benchmark — password encryption"
+
+  require_interface_description:
+    id: NCC-REQUIRE_INTERFACE_DESCRIPTION
+    description: Every interface must have a description for change management
+    severity: medium
+    scope: interface
+    conditions:
+      - "description"
+    remediation: |
+      interface GigabitEthernet0/1
+       description Uplink to core switch
+    references:
+      - "CIS Cisco IOS Benchmark — interface descriptions"
+
+  require_interface_ip:
+    id: NCC-REQUIRE_INTERFACE_IP
+    description: L3 interfaces under audit must include an IP address when numbered
+    severity: low
+    scope: interface
+    conditions:
+      - "ip address"
+    remediation: |
+      interface GigabitEthernet0/1
+       ip address 10.0.0.1 255.255.255.252
+    references:
+      - "Operational baseline — L3 interface numbering"
+
+  forbid_telnet_transport:
+    id: NCC-FORBID_TELNET_TRANSPORT
+    description: Telnet must not be enabled on VTY lines
+    severity: critical
+    scope: global
+    forbidden_conditions:
+      - "transport input telnet"
+    remediation: |
+      line vty 0 4
+       transport input ssh
+    references:
+      - "CIS Cisco IOS Benchmark — disable Telnet"

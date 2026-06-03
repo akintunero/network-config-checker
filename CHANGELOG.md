@@ -8,6 +8,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- JSON Schema enforcement at policy load (`jsonschema`)
+- Phrase-aware condition matching (`conditions.py`) and `docs/SCOPE.md`
+- Config file size limit (5 MiB default, `--max-config-mib`)
+- Vendor detection warnings (Juniper `set` vs Cisco IOS)
+- Policy deprecation fields: `deprecated`, `replaced_by` + `docs/POLICY_MIGRATION.md`
+- Release workflow (wheel, SBOM, GitHub Release) + `docs/RELEASE.md`
+- Mypy gate in CI; expanded tests (live, notifier, schema, limits, vendor)
+- `config_samples/sample_config.txt` aligned with hardened `configs/` devices
+
+### Changed
+- SARIF upload uses `continue-on-error` when Code Scanning is unavailable
+- GitHub Action supports optional `version` input for tagged installs
+- CI sample scan uses `policies/builtin` (all packs)
+
+### Added (prior unreleased)
+- Second builtin pack: `cisco_ios_management_hardening` (enable secret, console, logging, NTP, SNMP)
+- Git-tracked `configs/` tree (`production/`, `lab/`, `inventory.csv`)
+- Dedicated workflow `.github/workflows/config-compliance.yml` for `configs/**` changes
+
+## [2.1.0] - 2025-06-03
+
+### Added
+- **Offline-first product focus:** headline *Offline compliance scanner for network configs in Git*
+- Proper Python package `network_config_checker` with `pip install -e .`
+- Subcommands: `scan`, `validate-policies`, `policy explain`, `write-baseline`
+- Policy scopes: `global`, `interface`, `vlan`
+- Builtin pack `cisco_ios_baseline` with CIS-aligned rules and remediation text
+- Reports: SARIF, JUnit XML, HTML (escaped), CSV, JSON, TXT
+- Fleet scans: directory glob and CSV inventory
+- Baseline/regression comparison (`--baseline`, `write-baseline`)
+- GitHub Actions workflow, composite `action.yml`, Dockerfile
+- Documentation: policy authoring, tutorials, compatibility, security
+- Optional extras: `[live]`, `[notify]`, `[dev]`
+
+### Changed
+- Python minimum version raised to **3.11**
+- Removed duplicate `setup.py` and legacy `src/*.py` module layout
+- Core dependencies reduced to PyYAML; Netmiko/NAPALM moved to optional extras
+
+### Removed
+- Unused NAPALM dependency from core install path
+- Placeholder credentials from live monitoring examples (environment variables only)
+
+## [2.0.0] - 2025-07-27 (historical)
+
+### Added
 - Enhanced CLI interface with argument parsing
 - Comprehensive logging system
 - Multi-format report generation (TXT, JSON, HTML, CSV)

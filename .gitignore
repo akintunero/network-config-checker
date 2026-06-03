@@ -3,106 +3,36 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
 .venv/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs
-*.log
-logs/
-log/
-
-# Reports
-reports/
-*.txt
-*.json
-*.html
-*.csv
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Testing
+venv/
+dist/
+build/
+*.egg-info/
+.eggs/
 .pytest_cache/
 .coverage
 htmlcov/
-.tox/
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# PEP 582
-__pypackages__/
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
 .mypy_cache/
-.dmypy.json
-dmypy.json
+.ruff_cache/
+
+# Reports (generated)
+reports/*
+!reports/.gitkeep
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Secrets
+.env
+.env.*
+
+# Security tool output
+bandit-report.json
+safety-report.json
+
+# Legacy (must not return)
+requirements.txt
+requirements-dev.txt
+setup.py
